@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "channel": {
+      "title": "YouTube Channel Connection",
+      "description": "Stores credentials and analytical metadata for a connected YouTube Channel.",
+      "type": "object",
+      "properties": {
+        "channelId": { "type": "string", "description": "The specific YouTube Channel ID" },
+        "googleAccountId": { "type": "string", "description": "Owner's Google Account ID" },
+        "accessToken": { "type": "string", "description": "OAuth Access Token" },
+        "refreshToken": { "type": "string", "description": "OAuth Refresh Token" },
+        "channelName": { "type": "string", "description": "Readable name of the YouTube Channel" },
+        "subscriberCount": { "type": "number", "description": "Total subscriber count" },
+        "viewCount": { "type": "number", "description": "Total views count" },
+        "videoCount": { "type": "number", "description": "Total uploaded videos" },
+        "watchHours": { "type": "number", "description": "Total watch hours" },
+        "shortsViews": { "type": "number", "description": "Shorts views if available" },
+        "monthlyViews": { "type": "number", "description": "Monthly view count" },
+        "growthSubscriber": { "type": "number", "description": "Subscriber growth percentage/value" },
+        "growthViews": { "type": "number", "description": "View growth percentage/value" },
+        "createdAtDate": { "type": "string", "description": "Date channel was created" },
+        "country": { "type": "string", "description": "Primary country of the channel" },
+        "category": { "type": "string", "description": "Primary category of the channel" },
+        "lastSync": { "type": "string", "format": "date-time", "description": "Last time channel was fully updated" },
+        "status": { "type": "string", "enum": ["Connected", "Disconnected"], "description": "Current status" },
+        "thumbnail": { "type": "string", "description": "Profile picture URL" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["channelId", "accessToken", "channelName", "status"]
+    },
+    "activityLog": {
+      "title": "Activity Log",
+      "description": "Audit logs for all operations such as sync, updates, errors, login, disconnects.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string", "description": "The authenticated app user" },
+        "action": { "type": "string" },
+        "channelId": { "type": "string" },
+        "channelName": { "type": "string" },
+        "details": { "type": "string" },
+        "status": { "type": "string", "enum": ["success", "error", "info"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["action", "timestamp", "userId"]
+    }
+  },
+  "firestore": {
+    "/channels/{channelId}": {
+      "schema": "channel",
+      "description": "Connected YouTube accounts list"
+    },
+    "/activityLogs/{logId}": {
+      "schema": "activityLog",
+      "description": "User activity audit trail"
+    }
+  }
+}

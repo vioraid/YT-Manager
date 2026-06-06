@@ -1,0 +1,6 @@
+{
+  "name": "YouTube Multi Channel Manager",
+  "description": "Dashboard analytics modern untuk mengelola banyak channel YouTube secara multi account.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

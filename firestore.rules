@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Connected Channels Collection
+    match /channels/{channelId} {
+      allow read: if isSignedIn();
+      // Allow write if the user is authenticated. 
+      allow create, update: if isSignedIn() && isValidId(channelId);
+      allow delete: if isSignedIn();
+    }
+
+    // Activity Logs Collection
+    match /activityLogs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(logId);
+      allow update, delete: if false; // Logs are append-only and immutable
+    }
+  }
+}
